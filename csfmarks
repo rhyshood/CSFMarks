@@ -1,7 +1,14 @@
 package csfmarks;
 
-import java.util.Scanner;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Scanner;
+
 /**
  *
  * @author Rhys Hood
@@ -13,6 +20,7 @@ public class CSFMarks {
     static ArrayList<String> s1marks = new ArrayList<>();
     static ArrayList<String> s2marks = new ArrayList<>();
     static ArrayList<String> s3marks = new ArrayList<>();
+    static boolean marksentered = false;
     
     static void EnterMarks(){
         String input = " ";
@@ -28,11 +36,58 @@ public class CSFMarks {
                 s1marks.add(Character.toString(input.charAt(0)));
                 s2marks.add(Character.toString(input.charAt(1)));
                 s3marks.add(Character.toString(input.charAt(2)));
-                
             }
             else{
+               marksentered = true;
                System.out.println("Completed entering Marks");
+               System.out.println("Do you want to save the marks entered <y or n>");
+               scan1 = new Scanner(System.in);
+               String input2 = scan1.nextLine();
+               while(!"y".equals(input2) && !"n".equals(input2)){
+                   System.out.println("ERROR: Please only enter y or n!");
+                   System.out.println("Do you want to save the marks entered <y or n>");
+                   scan1 = new Scanner(System.in);
+                   input = scan1.nextLine();
+               }
+               if ("y".equals(input2)){
+                   CreateFile();
+               }
             }
+        }
+    }
+    
+    static void CreateFile(){
+      if (marksentered){
+      SimpleDateFormat formatter = new SimpleDateFormat("dd_MM_yyyy_HH_mm_ss");
+      Date date = new Date();
+      try {
+        File myObj = new File(formatter.format(date) + ".txt");
+        if (myObj.createNewFile()) {
+         System.out.println("File created: " + myObj.getName());
+        } else {
+         System.out.println("File already exists.");
+        }
+        WriteFile(myObj);
+       } catch (IOException e) {
+        System.out.println("An error occurred.");
+        }
+      }
+      else{
+          System.out.println("ERROR: There are no marks in memory.");
+      }
+    }
+    
+    static void WriteFile(File myObj){
+        try {
+            try (FileWriter myWriter = new FileWriter(myObj.getName())) {
+                for (int i = 0; i < totalmarks; i++) {
+                    myWriter.write(allmarks.get(i)+ "\n");
+                }
+                System.out.println(totalmarks + " student marks in memory");
+                System.out.println(totalmarks + " lines saved to file");
+            }
+        } catch (IOException e) {
+         System.out.println("An error occurred.");
         }
     }
     
@@ -232,22 +287,48 @@ public class CSFMarks {
         failed = GetPercentage(failed, totalmarks);
         System.out.println("Failed Section 3 less than 3: " + failed + "%");
     }
+    
+    static void ReadFile(){
+       System.out.println("Please enter the file name:");
+       Scanner scan1 = new Scanner(System.in);
+       String input = scan1.nextLine();
+       try {
+        File myObj = new File(input + ".txt");
+           try (Scanner myReader = new Scanner(myObj)) {
+               while (myReader.hasNextLine()) {
+                   String data = myReader.nextLine();
+                   totalmarks++;
+                   allmarks.add(data);
+                   s1marks.add(Character.toString(data.charAt(0)));
+                   s2marks.add(Character.toString(data.charAt(1)));
+                   s3marks.add(Character.toString(data.charAt(2)));
+               }
+               marksentered = true;
+               System.out.println(totalmarks + " student marks imported to memory");
+               System.out.println(input + ".txt opened");
+           }
+       } catch (FileNotFoundException e) {
+         System.out.println("ERROR: File not found");
+       }
+    }
 
     static int MenuOptions(){ // Defines the Menu method
-        System.out.println("Please select an option (1/2/3/4)"); // Asks user to input option
+        System.out.println("Please select an option (1/2/3/4/5/6)"); // Asks user to input option
         System.out.println("1. Enter Marks"); // Lists Option 1
         System.out.println("2. Show Sections Statistics"); // Lists Option 2
         System.out.println("3. Show Class Breakdown"); // Lists Option 3
-        System.out.println("4. Quit"); // Lists Option 4
+        System.out.println("4. Load Marks"); // Lists Option 4
+        System.out.println("5. Save Marks"); // Lists Option 5
+        System.out.println("6. Quit"); // Lists Option 6
         Scanner scan1 = new Scanner(System.in); //Waits for input
         return Integer.parseInt(scan1.nextLine());// Sets option to input
     }
     
     static void Menu(){
        int option = 0; // Initialises the option variable
-       while (option !=4){ // Loops menu until user choses to quit
+       while (option !=6){ // Loops menu until user choses to quit
         option = MenuOptions(); // Calls on the Menu method. (Message isn't included as it changes when there is an error)
-        while (option != 1 && option != 2 && option != 3 && option != 4){ // Starts Input Validation
+        while (option != 1 && option != 2 && option != 3 && option != 4 && option != 5 && option != 6){ // Starts Input Validation
             System.out.println("ERROR: Please only enter 1, 2, 3 or 4"); // Asks user to input 1,2,3 or 4
             option = MenuOptions(); // Calls on the Menu method. (Message isn't included as it changes when there is an error)
         }        
@@ -260,6 +341,12 @@ public class CSFMarks {
         else if (option == 3){
             ClassBreakdown();
         }
+        else if (option == 4){
+            ReadFile();
+        }
+        else if (option == 5){
+            CreateFile();
+        }
         else{
             System.out.println("You have chosen to quit. Goodbye!"); // Quits program if option 3 is chosen
         }
@@ -268,5 +355,5 @@ public class CSFMarks {
     
     public static void main(String[] args) {
        Menu();
-    } 
+    }
 }
