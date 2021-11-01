@@ -15,12 +15,12 @@ import java.util.Scanner;
  */
 public class CSFMarks {
     
-    static int totalmarks = 0;
-    static ArrayList<String> allmarks = new ArrayList<>();
-    static ArrayList<String> s1marks = new ArrayList<>();
-    static ArrayList<String> s2marks = new ArrayList<>();
-    static ArrayList<String> s3marks = new ArrayList<>();
-    static boolean marksentered = false;
+    static int totalMarks = 0;
+    static ArrayList<String> allMarks = new ArrayList<>();
+    static ArrayList<String> s1Marks = new ArrayList<>();
+    static ArrayList<String> s2Marks = new ArrayList<>();
+    static ArrayList<String> s3Marks = new ArrayList<>();
+    static boolean marksEntered = false;
     
     static void EnterMarks(){
         String input = " ";
@@ -31,14 +31,14 @@ public class CSFMarks {
             input = scan1.nextLine();
             
             if (!"#".equals(input)){
-                totalmarks++;
-                allmarks.add(input);
-                s1marks.add(Character.toString(input.charAt(0)));
-                s2marks.add(Character.toString(input.charAt(1)));
-                s3marks.add(Character.toString(input.charAt(2)));
+                totalMarks++;
+                allMarks.add(input);
+                s1Marks.add(Character.toString(input.charAt(0)));
+                s2Marks.add(Character.toString(input.charAt(1)));
+                s3Marks.add(Character.toString(input.charAt(2)));
             }
             else{
-               marksentered = true;
+               marksEntered = true;
                System.out.println("Completed entering Marks");
                System.out.println("Do you want to save the marks entered <y or n>");
                scan1 = new Scanner(System.in);
@@ -57,7 +57,7 @@ public class CSFMarks {
     }
     
     static void CreateFile(){
-      if (marksentered){
+      if (marksEntered){
       SimpleDateFormat formatter = new SimpleDateFormat("dd_MM_yyyy_HH_mm_ss");
       Date date = new Date();
       try {
@@ -80,11 +80,11 @@ public class CSFMarks {
     static void WriteFile(File myObj){
         try {
             try (FileWriter myWriter = new FileWriter(myObj.getName())) {
-                for (int i = 0; i < totalmarks; i++) {
-                    myWriter.write(allmarks.get(i)+ "\n");
+                for (int i = 0; i < totalMarks; i++) {
+                    myWriter.write(allMarks.get(i)+ "\n");
                 }
-                System.out.println(totalmarks + " student marks in memory");
-                System.out.println(totalmarks + " lines saved to file");
+                System.out.println(totalMarks + " student marks in memory");
+                System.out.println(totalMarks + " lines saved to file");
             }
         } catch (IOException e) {
          System.out.println("An error occurred.");
@@ -109,8 +109,8 @@ public class CSFMarks {
         int q5 = 0;
         
         if (num == 1){
-            for (int i = 0; i < totalmarks; i++) {
-                switch (s1marks.get(i)) {
+            for (int i = 0; i < totalMarks; i++) {
+                switch (s1Marks.get(i)) {
                     case "0":
                         q0 = q0 + 1;
                         break;
@@ -133,8 +133,8 @@ public class CSFMarks {
             }
         }
         else if (num == 2){
-            for (int i = 0; i < totalmarks; i++) {
-                switch (s2marks.get(i)) {
+            for (int i = 0; i < totalMarks; i++) {
+                switch (s2Marks.get(i)) {
                     case "0":
                         q0 = q0 + 1;
                         break;
@@ -157,8 +157,8 @@ public class CSFMarks {
             }
         }
         else{
-            for (int i = 0; i < totalmarks; i++) {
-                switch (s3marks.get(i)) {
+            for (int i = 0; i < totalMarks; i++) {
+                switch (s3Marks.get(i)) {
                     case "0":
                         q0 = q0 + 1;
                         break;
@@ -180,12 +180,12 @@ public class CSFMarks {
                 }
             }
         }
-        q0 = GetPercentage(q0, totalmarks);
-        q1 = GetPercentage(q1, totalmarks);
-        q2 = GetPercentage(q2, totalmarks);
-        q3 = GetPercentage(q3, totalmarks);
-        q4 = GetPercentage(q4, totalmarks);
-        q5 = GetPercentage(q5, totalmarks);
+        q0 = GetPercentage(q0, totalMarks);
+        q1 = GetPercentage(q1, totalMarks);
+        q2 = GetPercentage(q2, totalMarks);
+        q3 = GetPercentage(q3, totalMarks);
+        q4 = GetPercentage(q4, totalMarks);
+        q5 = GetPercentage(q5, totalMarks);
         
         DisplaySections(q0,q1,q2,q3,q4,q5);
     }
@@ -220,71 +220,71 @@ public class CSFMarks {
     
     static void Fullmarks(){
         int fm = 0;
-        for (int i = 0; i < totalmarks; i++) {
-                switch (allmarks.get(i)) {
+        for (int i = 0; i < totalMarks; i++) {
+                switch (allMarks.get(i)) {
                     case "555":
                         fm = fm + 1;
                         break;
                 }
             }
-        fm = GetPercentage(fm, totalmarks);
+        fm = GetPercentage(fm, totalMarks);
         System.out.println("Fullmarks 555: " + fm + "%");
     }
     
     static void BPassmarks(){
         int bp = 0;
-        for (int i = 0; i <= totalmarks-1; i++) {
-                switch (allmarks.get(i)) {
+        for (int i = 0; i <= totalMarks-1; i++) {
+                switch (allMarks.get(i)) {
                     case "333":
                         bp = bp + 1;
                         break;
                 }
             }
-        bp = GetPercentage(bp, totalmarks);
+        bp = GetPercentage(bp, totalMarks);
         System.out.println("Borderline Pass 333: " + bp + "%");
     }
     
     static void Passmarks(){
         int fpp = 0;
-        for (int i = 0; i <= totalmarks-1; i++) {
-                if(Integer.parseInt(allmarks.get(i)) >= 333 && Integer.parseInt(allmarks.get(i)) <= 555){
+        for (int i = 0; i <= totalMarks-1; i++) {
+                if(Integer.parseInt(allMarks.get(i)) >= 333 && Integer.parseInt(allMarks.get(i)) <= 555){
                     fpp = fpp + 1;
                 }
             }
-        fpp = GetPercentage(fpp, totalmarks);
+        fpp = GetPercentage(fpp, totalMarks);
         System.out.println("Full Paper Pass all sections >= 333: " + fpp + "%");
     }
     
     static void Failedone (){
         int failed = 0;
-        for (int i = 0; i <= totalmarks-1; i++) {
-                if(Integer.parseInt(s1marks.get(i)) < 3){
+        for (int i = 0; i <= totalMarks-1; i++) {
+                if(Integer.parseInt(s1Marks.get(i)) < 3){
                     failed = failed + 1;
                 }
             }
-        failed = GetPercentage(failed, totalmarks);
+        failed = GetPercentage(failed, totalMarks);
         System.out.println("Failed Section 1 less than 3: " + failed + "%");
     }
     
     static void Failedtwo (){
         int failed = 0;
-        for (int i = 0; i <= totalmarks-1; i++) {
-                if(Integer.parseInt(s2marks.get(i)) < 3){
+        for (int i = 0; i <= totalMarks-1; i++) {
+                if(Integer.parseInt(s2Marks.get(i)) < 3){
                     failed = failed + 1;
                 }
             }
-        failed = GetPercentage(failed, totalmarks);
+        failed = GetPercentage(failed, totalMarks);
         System.out.println("Failed Section 2 less than 3: " + failed + "%");
     }
     
     static void Failedthree (){
         int failed = 0;
-        for (int i = 0; i <= totalmarks-1; i++) {
-                if(Integer.parseInt(s3marks.get(i)) < 3){
+        for (int i = 0; i <= totalMarks-1; i++) {
+                if(Integer.parseInt(s3Marks.get(i)) < 3){
                     failed = failed + 1;
                 }
             }
-        failed = GetPercentage(failed, totalmarks);
+        failed = GetPercentage(failed, totalMarks);
         System.out.println("Failed Section 3 less than 3: " + failed + "%");
     }
     
@@ -297,14 +297,14 @@ public class CSFMarks {
            try (Scanner myReader = new Scanner(myObj)) {
                while (myReader.hasNextLine()) {
                    String data = myReader.nextLine();
-                   totalmarks++;
-                   allmarks.add(data);
-                   s1marks.add(Character.toString(data.charAt(0)));
-                   s2marks.add(Character.toString(data.charAt(1)));
-                   s3marks.add(Character.toString(data.charAt(2)));
+                   totalMarks++;
+                   allMarks.add(data);
+                   s1Marks.add(Character.toString(data.charAt(0)));
+                   s2Marks.add(Character.toString(data.charAt(1)));
+                   s3Marks.add(Character.toString(data.charAt(2)));
                }
-               marksentered = true;
-               System.out.println(totalmarks + " student marks imported to memory");
+               marksEntered = true;
+               System.out.println(totalMarks + " student marks imported to memory");
                System.out.println(input + ".txt opened");
            }
        } catch (FileNotFoundException e) {
